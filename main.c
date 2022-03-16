@@ -137,26 +137,24 @@ void PrintList(struct Node *start)
     printf("\n");
 }
 
-void r_w_lista(struct Node **inicio)
+void r_w_lista(struct Node **inicio, int mx)
 {
-    int matriz_linhas = 2;
-    int matriz_colunas = 2;
-    int value = 1;
-    // printf("insira numero de linhas da matriz: \n");
-    // scanf("%d", &matriz_linhas);
-    // printf("insira numero de colunas da matriz: \n");
-    // scanf("%d", &matriz_colunas);
-
-    int matriz[matriz_linhas][matriz_colunas];
+    int matriz_linhas;
+    int matriz_colunas;
+    int value;
+    printf("%s%d%s","insira numero de linhas da matriz M", mx, ": \n");
+    scanf("%d", &matriz_linhas);
+    printf("%s%d%s","insira numero de colunas da matriz M", mx, ": \n");
+    scanf("%d", &matriz_colunas);
 
     for (int i = 0; i < matriz_linhas; i++)
     {
         for (int j = 0; j < matriz_colunas; j++)
         {
-            // printf("insira o valor para");
-            // printf("%s%d%s", "[", i, "]");
-            // printf("%s%d%s", "[", j, "]");
-            // scanf("%d", &value);
+            printf("%s%d","insira o valor para M", mx);
+            printf("%s%d%s", "[", i, "]");
+            printf("%s%d%s", "[", j, "]");
+            scanf("%d", &value);
 
             if (value != 0)
             {
@@ -179,10 +177,9 @@ void cria_matrizes(Matrizes *p)
     {
         struct Node *nodo = NULL;
         p->array[p->used++] = nodo;
-        r_w_lista(&nodo);
+        r_w_lista(&nodo, i);
         PrintList(nodo);
     }
-    
 }
 
 int main()
