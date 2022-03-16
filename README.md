@@ -1,42 +1,38 @@
 # UNIVERSIDADE FEDERAL DO PARANÁ
 
-# CURSO SUPERIOR DE TECNOLOGIA EM ANÁLISE E DESENVOLVIMENTO
+## CURSO SUPERIOR DE TECNOLOGIA EM ANÁLISE E DESENVOLVIMENTO DE SISTEMAS
 
-# DE SISTEMAS
+## DS- 130 - ESTRUTURAS DE DADOS I – 3 º. PERÍODO
 
-# DS- 130 - ESTRUTURAS DE DADOS I – 3 º. PERÍODO
+## TRABALHO PRÁTICO I
 
-# TRABALHO PRÁTICO I
 
-Postagem do Trabalho no Moodle **–** 04 / 04 /20 22 (segunda)
-Defesas do Trabalho: 05 e 12 / 04 /20 22
-
-PROBLEMA 1 **–** CALCULADORA DE MATRIZ ESPARSA ( 50 pontos)
+####PROBLEMA 1 **–** CALCULADORA DE MATRIZ ESPARSA
 
 Criar um programa em C que manipule matrizes esparsas, utilizando lista linear encadeada.
 OBS: Uma matriz é considerada esparsa quando a maioria dos seus dados são zeros.
 
 Exemplo de Matriz Esparsa
 
-# 0 0 0 0 0 0 0 0 0 0
+`0 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 0 0 0 0 0 0 0
+`0 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 1 0 0 0 0 0 0
+`0 0 0 1 0 0 0 0 0 0`
 
-# 3 0 0 0 0 0 0 0 0 0
+`3 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 0 0 0 0 0 0 3.
+`0 0 0 0 0 0 0 0 0 3`
 
-# 0 0 0 0 0 0 0 0 0 0
+`0 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 0 0 0 0 0 0 0
+`0 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 0 5 0 0 0 0 0
+`0 0 0 0 5 0 0 0 0 0`
 
-# 0 0 0 0 0 0 0 0 0 0
+`0 0 0 0 0 0 0 0 0 0`
 
-# 0 0 0 0 0 0 0 0 3 0
+`0 0 0 0 0 0 0 0 3 0`
 
 Em caso da matriz ser muito grande não é vantajoso, em termos de memória, armazenar todos os
 dados, até porque a maioria são zeros. Então o objetivo do trabalho é criar uma lista encadeada e
@@ -49,12 +45,13 @@ zero como os zeros.
 
 O programa deverá ser formado pela seguinte struct:
 
-typedef struct nodo
-{
-float dado;
-int lin, col;
-struct nodo *prox;
-}Matriz_Esparsa;
+
+`typedef struct nodo`
+`{`
+`float dado;`
+`int lin, col;`
+`struct nodo *prox;`
+`}Matriz_Esparsa;`
 
 E pelas seguintes funções:
 
@@ -78,14 +75,14 @@ Observações:
 - O usuário pode entrar com quantas matrizes desejar.
 - O usuário deve informar a dimensão de cada matriz.
 - O usuário poderá fazer quantas operações desejar com as matrizes.
-- Exemplo: MA * MB + MC - MD
+- Exemplo: `MA * MB + MC - MD`
 - Considerar as regras de operações com matrizes para implementar a soma, subtração,
     multiplicação, transposta e diagonal principal de matrizes.
 - As listas encadeadas (que representam as matrizes) devem ser passadas como
     parâmetros das funções.
 
 
-PROBLEMA 2 **–** ROTAS DE ÔNIBUS ( 50 pontos)
+####PROBLEMA 2 **–** ROTAS DE ÔNIBUS ( 50 pontos)
 
 Objetivo: Implementar uma Lista de Rotas de Ônibus utilizando Listas Duplamente Encadeadas.
 
