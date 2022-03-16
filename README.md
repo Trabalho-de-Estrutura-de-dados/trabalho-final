@@ -14,25 +14,25 @@ OBS: Uma matriz é considerada esparsa quando a maioria dos seus dados são zero
 
 Exemplo de Matriz Esparsa
 
-`0 0 0 0 0 0 0 0 0 0`
+0 0 0 0 0 0 0 0 0 0
 
-`0 0 0 0 0 0 0 0 0 0`
+0 0 0 0 0 0 0 0 0 0
 
-`0 0 0 1 0 0 0 0 0 0`
+0 0 0 1 0 0 0 0 0 0
 
-`3 0 0 0 0 0 0 0 0 0`
+3 0 0 0 0 0 0 0 0 0
 
-`0 0 0 0 0 0 0 0 0 3`
+0 0 0 0 0 0 0 0 0 3
 
-`0 0 0 0 0 0 0 0 0 0`
+0 0 0 0 0 0 0 0 0 0
 
-`0 0 0 0 0 0 0 0 0 0`
+0 0 0 0 0 0 0 0 0 0
 
-`0 0 0 0 5 0 0 0 0 0`
+0 0 0 0 5 0 0 0 0 0
 
-`0 0 0 0 0 0 0 0 0 0`
+0 0 0 0 0 0 0 0 0 0
 
-`0 0 0 0 0 0 0 0 3 0`
+0 0 0 0 0 0 0 0 3 0
 
 Em caso da matriz ser muito grande não é vantajoso, em termos de memória, armazenar todos os
 dados, até porque a maioria são zeros. Então o objetivo do trabalho é criar uma lista encadeada e
@@ -46,12 +46,13 @@ zero como os zeros.
 O programa deverá ser formado pela seguinte struct:
 
 
-`typedef struct nodo`
-`{`
-`float dado;`
-`int lin, col;`
-`struct nodo *prox;`
-`}Matriz_Esparsa;`
+```c 
+typedef struct nodo { 
+    float dado;
+    int lin, col;
+    struct nodo *prox;
+} Matriz_Esparsa;
+```
 
 E pelas seguintes funções:
 
