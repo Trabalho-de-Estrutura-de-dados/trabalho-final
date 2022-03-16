@@ -12,6 +12,13 @@ struct Node
     struct Node *next;
 } Nodo;
 
+typedef struct Matrizes
+{
+    struct Node **array;
+    int used;
+    int size;
+} Matrizes;
+
 struct Node *aloca_nodo()
 {
 
@@ -132,11 +139,13 @@ void PrintList(struct Node *start)
 
 void r_w_lista(struct Node **inicio)
 {
-    int matriz_linhas, matriz_colunas, value;
-    printf("insira numero de linhas da matriz: \n");
-    scanf("%d", &matriz_linhas);
-    printf("insira numero de colunas da matriz: \n");
-    scanf("%d", &matriz_colunas);
+    int matriz_linhas = 2;
+    int matriz_colunas = 2;
+    int value = 1;
+    // printf("insira numero de linhas da matriz: \n");
+    // scanf("%d", &matriz_linhas);
+    // printf("insira numero de colunas da matriz: \n");
+    // scanf("%d", &matriz_colunas);
 
     int matriz[matriz_linhas][matriz_colunas];
 
@@ -144,10 +153,10 @@ void r_w_lista(struct Node **inicio)
     {
         for (int j = 0; j < matriz_colunas; j++)
         {
-            printf("insira o valor para");
-            printf("%s%d%s", "[", i, "]");
-            printf("%s%d%s", "[", j, "]");
-            scanf("%d", &value);
+            // printf("insira o valor para");
+            // printf("%s%d%s", "[", i, "]");
+            // printf("%s%d%s", "[", j, "]");
+            // scanf("%d", &value);
 
             if (value != 0)
             {
@@ -157,19 +166,13 @@ void r_w_lista(struct Node **inicio)
     }
 }
 
-typedef struct Matrizes
+void cria_matrizes(Matrizes *p)
 {
-    struct Node **array;
-    int used;
-    int size;
-} Matrizes;
+    int numero = 2;
 
-void cria_matrizes(struct Matrizes *p)
-{
-    int numero;
     printf("insira numero de de matrizes: \n");
     scanf("%d", &numero);
-    p->array = malloc(numero * sizeof(__SIZEOF_POINTER__));
+    p->array = malloc(numero * sizeof(struct Node *));
     p->used = 0;
     p->size = numero;
     for (int i = 0; i < numero; i++)
@@ -177,14 +180,16 @@ void cria_matrizes(struct Matrizes *p)
         struct Node *nodo = NULL;
         p->array[p->used++] = nodo;
         r_w_lista(&nodo);
+        PrintList(nodo);
     }
-};
+    
+}
 
 int main()
 {
 
-    struct Matrizes *all = NULL;
-    cria_matrizes(all);
+    struct Matrizes all;
+    cria_matrizes(&all);
     // // Assume 4x5 sparse matrix
     // int sparseMatric[4][5] =
     //     {
@@ -194,7 +199,7 @@ int main()
     //         {0, 2, 6, 0, 0}};
 
     /* Start with the empty list */
-    struct Node *start = NULL;
+    // struct Node *start = NULL;
 
     // for (int i = 0; i < 4; i++){
     //     for (int j = 0; j < 5; j++)
@@ -204,8 +209,6 @@ int main()
     //             cria_nodo(&start, sparseMatric[i][j], i, j);
 
     // }
-
-    PrintList(start);
 
     return 0;
 }
