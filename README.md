@@ -83,7 +83,7 @@ Observações:
     parâmetros das funções.
 
 
-#### PROBLEMA 2 **–** ROTAS DE ÔNIBUS ( 50 pontos)
+#### PROBLEMA 2 **–** ROTAS DE ÔNIBUS 
 
 Objetivo: Implementar uma Lista de Rotas de Ônibus utilizando Listas Duplamente Encadeadas.
 
