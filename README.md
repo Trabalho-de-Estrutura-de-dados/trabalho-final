@@ -7,7 +7,7 @@
 ## TRABALHO PRÁTICO I
 
 
-####PROBLEMA 1 **–** CALCULADORA DE MATRIZ ESPARSA
+#### PROBLEMA 1 **–** CALCULADORA DE MATRIZ ESPARSA
 
 Criar um programa em C que manipule matrizes esparsas, utilizando lista linear encadeada.
 OBS: Uma matriz é considerada esparsa quando a maioria dos seus dados são zeros.
@@ -83,7 +83,7 @@ Observações:
     parâmetros das funções.
 
 
-####PROBLEMA 2 **–** ROTAS DE ÔNIBUS ( 50 pontos)
+#### PROBLEMA 2 **–** ROTAS DE ÔNIBUS ( 50 pontos)
 
 Objetivo: Implementar uma Lista de Rotas de Ônibus utilizando Listas Duplamente Encadeadas.
 
