@@ -77,7 +77,7 @@ void soma_matriz(Matrizes *p, int id1, int id2)
     }
     else
     {
-        while (A->next != NULL || B->next != NULL)
+        while (A || B)
         {
             if ((A->column_postion == B->column_postion) && (A->row_position == B->row_position))
             {
