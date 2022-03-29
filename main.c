@@ -33,6 +33,29 @@ struct Node *aloca_nodo()
     }
     return nodo;
 }
+void insert_start(struct Node **N, int non_zero_element,
+                  int row_index, int column_index)
+{
+    struct Node *novo;
+    novo = (struct Node *)malloc(sizeof(node));
+
+    if (*N == NULL)
+    {
+        novo->value = non_zero_element;
+        novo->column_postion = column_index;
+        novo->row_position = row_index;
+        novo->prox = NULL;
+        *N = novo;
+    }
+    else
+    {
+        novo->value = non_zero_element;
+        novo->column_postion = column_index;
+        novo->row_position = row_index;
+        novo->prox = *N;
+        *N = novo;
+    }
+}
 
 // Function to create new node
 void cria_nodo(struct Node **start, int non_zero_element,
@@ -96,30 +119,44 @@ void PrintList(struct Node *start)
 {
     struct Node *temp, *r, *s;
     temp = r = s = start;
-
-    printf("row_position: \t");
-    while (temp != NULL)
+    int nowRow = temp->row_position;
+    printf("\n-----------------------------\n");
+    while (temp)
     {
+        if (temp->row_position != nowRow)
+        {
+            printf("\n");
+        }
+        printf("%d%s", temp->value, " ");
 
-        printf("%d ", temp->row_position);
+        nowRow = temp->row_position;
         temp = temp->next;
     }
+    printf("\n-----------------------------\n");
     printf("\n");
+    // printf("row_position: \t");
+    // while (temp != NULL)
+    // {
 
-    printf("column_postion:\t ");
-    while (r != NULL)
-    {
-        printf("%d ", r->column_postion);
-        r = r->next;
-    }
-    printf("\n");
-    printf("Value: ");
-    while (s != NULL)
-    {
-        printf("%d ", s->value);
-        s = s->next;
-    }
-    printf("\n");
+    //     printf("%d ", temp->row_position);
+    //     temp = temp->next;
+    // }
+    // printf("\n");
+
+    // printf("column_postion:\t ");
+    // while (r != NULL)
+    // {
+    //     printf("%d ", r->column_postion);
+    //     r = r->next;
+    // }
+    // printf("\n");
+    // printf("Value: ");
+    // while (s != NULL)
+    // {
+    //     printf("%d ", s->value);
+    //     s = s->next;
+    // }
+    // printf("\n");
 }
 
 //--------------------------------------------------------------Matriz Array Declare---------------------------------------------------------------------------------------------
@@ -278,13 +315,57 @@ void multiplica_matriz(Matrizes *p, int id1, int id2)
     PrintList(C);
 }
 
+void transpor_matriz(Matrizes *p, int id1)
+{
+    struct Node *A = p->array[id1];
+    struct Node *aux;
+    struct Node *prev;
+    struct Node *At = NULL;
+    int buffer;
+    while (A)
+    {
+        if (At == NULL)
+        {
+            cria_nodo(&At, A->value, A->column_postion, A->row_position);
+        }
+        else
+        {
+            now = At;
+            post = At->next;
+            if (aux == NULL)
+            {
+                if (now->column_postion > A->column_postion)
+                {
+                    insert_start(&At, A->value, A->column_postion, A->row_position);
+                }
+                else
+                {
+                    (&At, A->value, A->column_postion, A->row_position);
+                }
+            }
+        }
+
+        A = A->next;
+    }
+    while (At)
+    {
+        prev
+            aux = At->next;
+        if (At->column_postion > aux->column_postion)
+        {
+        }
+    }
+
+    PrintList(At);
+}
+
 //------------------------------------------------------------------------------------main------------------------------------------------------------------------------------
 int main()
 {
 
     struct Matrizes all;
     cria_matrizes(&all);
-    multiplica_matriz(&all, 0, 1);
+    transpor_matriz(&all, 0);
     // // Assume 4x5 sparse matrix
     // int sparseMatric[4][5] =
     //     {
