@@ -2,16 +2,126 @@
 // using Linked Lists
 #include <stdio.h>
 #include <stdlib.h>
-#include "nodo.c"
-
+//--------------------------------------------------------------typedefs--------------------------------------------------------------------------------------------------------
 typedef struct Matrizes
 {
     struct Node **array;
-    int **msizes;
     int used;
     int size;
 } Matrizes;
 
+// Node to represent sparse matrix
+struct Node
+{
+    int value;
+    int row_position;
+    int column_postion;
+    struct Node *next;
+} Nodo;
+//--------------------------------------------------------------Nodo functions--------------------------------------------------------------------------------------------------
+
+struct Node *aloca_nodo()
+{
+
+    struct Node *nodo;
+    nodo = (struct Node *)malloc(sizeof(struct Node));
+    if (!nodo)
+    {
+        printf("Problema de alocação");
+        exit(0);
+    }
+    return nodo;
+}
+
+// Function to create new node
+void cria_nodo(struct Node **start, int non_zero_element,
+               int row_index, int column_index)
+{
+    struct Node *temp, *r;
+    temp = *start;
+    if (temp == NULL)
+    {
+        // Create new node dynamically
+        temp = aloca_nodo();
+        temp->value = non_zero_element;
+        temp->row_position = row_index;
+        temp->column_postion = column_index;
+        temp->next = NULL;
+        *start = temp;
+    }
+    else
+    {
+        while (temp->next != NULL)
+            temp = temp->next;
+
+        // Create new node dynamically
+        r = aloca_nodo();
+        r->value = non_zero_element;
+        r->row_position = row_index;
+        r->column_postion = column_index;
+        r->next = NULL;
+        temp->next = r;
+    }
+}
+int busca_dado(struct Node **inicio, int linha, int coluna)
+{
+    struct Node *atual = *inicio;
+    while (atual != NULL)
+    {
+        if (atual->row_position == linha && atual->column_postion == coluna)
+        {
+            return atual->value;
+        }
+        atual = atual->next;
+    }
+    return 0;
+}
+
+void libera_lista(struct Node **inicio)
+{
+    struct Node *atual = *inicio;
+    struct Node *tmp;
+    while (atual != NULL)
+    {
+        tmp = atual;
+        atual = atual->next;
+        free(tmp);
+    }
+    atual = NULL;
+}
+// This function prints contents of linked list
+// starting from start
+void PrintList(struct Node *start)
+{
+    struct Node *temp, *r, *s;
+    temp = r = s = start;
+
+    printf("row_position: \t");
+    while (temp != NULL)
+    {
+
+        printf("%d ", temp->row_position);
+        temp = temp->next;
+    }
+    printf("\n");
+
+    printf("column_postion:\t ");
+    while (r != NULL)
+    {
+        printf("%d ", r->column_postion);
+        r = r->next;
+    }
+    printf("\n");
+    printf("Value: ");
+    while (s != NULL)
+    {
+        printf("%d ", s->value);
+        s = s->next;
+    }
+    printf("\n");
+}
+
+//--------------------------------------------------------------Matriz Array Declare---------------------------------------------------------------------------------------------
 void r_w_lista(struct Node **inicio, int mx, Matrizes *p)
 {
     int matriz_linhas;
@@ -21,8 +131,6 @@ void r_w_lista(struct Node **inicio, int mx, Matrizes *p)
     scanf("%d", &matriz_linhas);
     printf("%s%d%s", "insira numero de colunas da matriz M", mx, ": \n");
     scanf("%d", &matriz_colunas);
-    int size[2] = {matriz_linhas, matriz_colunas};
-    p->msizes[mx] = size;
     for (int i = 0; i < matriz_linhas; i++)
     {
         for (int j = 0; j < matriz_colunas; j++)
@@ -47,7 +155,6 @@ void cria_matrizes(Matrizes *p)
     printf("insira numero de de matrizes: \n");
     scanf("%d", &numero);
     p->array = malloc(numero * sizeof(struct Node *));
-    p->msizes = malloc(numero * sizeof(int[2]));
     p->used = 0;
     p->size = numero;
     for (int i = 0; i < numero; i++)
@@ -59,84 +166,62 @@ void cria_matrizes(Matrizes *p)
         PrintList((p->array[i]));
     }
 }
-
+//--------------------------------------------------------------------------Matriz Operations---------------------------------------------------------------------------------
 void soma_matriz(Matrizes *p, int id1, int id2)
 {
     struct Node *A = p->array[id1];
     struct Node *B = p->array[id2];
     struct Node *C = NULL;
-    // int size = p->msizes[id1][0];
 
-    if ((p->msizes[id1][0] != p->msizes[id2][0]) && (p->msizes[id1][1] != p->msizes[id2][1]))
+    while (A && B)
     {
-        printf("Não pode somar matrizes de ordens diferentes");
-    }
-    else if ((p->msizes[id2][0] != p->msizes[id2][1]) && (p->msizes[id1][0] != p->msizes[id1][1]))
-    {
-        printf("Não pode somar matrizes não quadradas");
-    }
-    else
-    {
-        while (A || B)
+
+        if (A->row_position == B->row_position)
         {
-            if ((A->column_postion == B->column_postion) && (A->row_position == B->row_position))
+            if (A->column_postion == B->column_postion)
             {
                 cria_nodo(&C, (A->value + B->value), A->row_position, A->column_postion);
-
                 A = A->next;
-
                 B = B->next;
+            }
+            else if (A->column_postion < B->column_postion)
+            {
+                cria_nodo(&C, A->value, A->row_position, A->column_postion);
+                A = A->next;
             }
             else
             {
-                if (A->row_position > B->row_position)
-                {
-                    cria_nodo(&C, B->value, B->row_position, B->column_postion);
-
-                    B = B->next;
-                }
-                else if (B->row_position > A->row_position)
-                {
-                    cria_nodo(&C, A->value, A->row_position, A->column_postion);
-
-                    A = A->next;
-                }
-                else if (B->row_position == A->row_position)
-                {
-                    if (A->column_postion > B->column_postion)
-                    {
-                        cria_nodo(&C, B->value, B->row_position, B->column_postion);
-
-                        B = B->next;
-                    }
-                    else if (B->column_postion > A->column_postion)
-                    {
-                        cria_nodo(&C, A->value, A->row_position, A->column_postion);
-
-                        A = A->next;
-                    }
-                }
+                cria_nodo(&C, B->value, B->row_position, B->column_postion);
+                B = B->next;
+            }
+        }
+        else
+        {
+            if (A->row_position < B->row_position)
+            {
+                cria_nodo(&C, A->value, A->row_position, A->column_postion);
+                A = A->next;
+            }
+            else
+            {
+                cria_nodo(&C, B->value, B->row_position, B->column_postion);
+                B = B->next;
             }
         }
     }
+    while (A != NULL)
+    {
+        cria_nodo(&C, A->value, A->row_position, A->column_postion);
+        A = A->next;
+    }
+    while (B != NULL)
+    {
+        cria_nodo(&C, B->value, B->row_position, B->column_postion);
+        B = B->next;
+    }
+
     PrintList(C);
 }
-
-// void soma_matriz(struct Node **inicio1, struct Node **inicio2)
-// {
-//     struct Node *atual1 = *inicio1;
-//     struct Node *atual2 = *inicio2;
-
-//     while (inicio1 != NULL)
-//     {
-//         while (inicio2 != NULL)
-//         {
-
-//             atual2 = atual2->next;
-//         }
-//         atual1 = atual1->next;
-//     }
-// }
 
 int main()
 {
