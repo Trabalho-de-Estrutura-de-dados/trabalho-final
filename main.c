@@ -2,6 +2,7 @@
 // using Linked Lists
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 //--------------------------------------------------------------typedefs--------------------------------------------------------------------------------------------------------
 typedef struct Matrizes
 {
@@ -166,13 +167,13 @@ void cria_matrizes(Matrizes *p)
         PrintList((p->array[i]));
     }
 }
-//--------------------------------------------------------------------------Matriz Operations---------------------------------------------------------------------------------
-void soma_matriz(Matrizes *p, int id1, int id2)
+//-------------------------------------------------------------------------utils (funções auxiliares)---------------------------------------------------------------------------
+// op == 1 ? soma matriizes : subtrai matrizes
+struct Node *soma_subtrai(struct Node *A, struct Node *B, bool op)
 {
-    struct Node *A = p->array[id1];
-    struct Node *B = p->array[id2];
-    struct Node *C = NULL;
 
+    int value;
+    struct Node *C = NULL;
     while (A && B)
     {
 
@@ -180,7 +181,8 @@ void soma_matriz(Matrizes *p, int id1, int id2)
         {
             if (A->column_postion == B->column_postion)
             {
-                cria_nodo(&C, (A->value + B->value), A->row_position, A->column_postion);
+                op == 1 ? (value = (A->value + B->value)) : (value = (A->value - (B->value)));
+                cria_nodo(&C, value, A->row_position, A->column_postion);
                 A = A->next;
                 B = B->next;
             }
@@ -191,7 +193,8 @@ void soma_matriz(Matrizes *p, int id1, int id2)
             }
             else
             {
-                cria_nodo(&C, B->value, B->row_position, B->column_postion);
+                op == 1 ? (value = B->value) : (value = -(B->value));
+                cria_nodo(&C, value, B->row_position, B->column_postion);
                 B = B->next;
             }
         }
@@ -199,12 +202,14 @@ void soma_matriz(Matrizes *p, int id1, int id2)
         {
             if (A->row_position < B->row_position)
             {
+
                 cria_nodo(&C, A->value, A->row_position, A->column_postion);
                 A = A->next;
             }
             else
             {
-                cria_nodo(&C, B->value, B->row_position, B->column_postion);
+                op == 1 ? (value = B->value) : (value = -(B->value));
+                cria_nodo(&C, value, B->row_position, B->column_postion);
                 B = B->next;
             }
         }
@@ -216,19 +221,70 @@ void soma_matriz(Matrizes *p, int id1, int id2)
     }
     while (B != NULL)
     {
-        cria_nodo(&C, B->value, B->row_position, B->column_postion);
+        op == 1 ? (value = B->value) : (value = -(B->value));
+        cria_nodo(&C, value, B->row_position, B->column_postion);
         B = B->next;
     }
+    return C;
+}
+//--------------------------------------------------------------------------Matriz Operations---------------------------------------------------------------------------------
+
+void soma_matriz(Matrizes *p, int id1, int id2)
+{
+    struct Node *A = p->array[id1];
+    struct Node *B = p->array[id2];
+    struct Node *C = soma_subtrai(A, B, true); // op == 1 ? soma matriizes : subtrai matrizes
 
     PrintList(C);
 }
 
+void subtrai_matriz(Matrizes *p, int id1, int id2)
+{
+    struct Node *A = p->array[id1];
+    struct Node *B = p->array[id2];
+    struct Node *C = soma_subtrai(A, B, false); // op == 1 ? soma matriizes : subtrai matrizes
+
+    PrintList(C);
+}
+
+void multiplica_matriz(Matrizes *p, int id1, int id2)
+{
+    struct Node *A = p->array[id1];
+    struct Node *B = p->array[id2];
+    struct Node *C = NULL;
+    while (A && B)
+    {
+        if (A->row_position == B->row_position)
+        {
+            if (A->column_postion == B->column_postion)
+            {
+                cria_nodo(&C, (A->value * B->value), A->row_position, A->column_postion);
+                A = A->next;
+                B = B->next;
+            }
+            else if (A->column_postion < B->column_postion)
+                A = A->next;
+            else
+                B = B->next;
+        }
+        else
+        {
+            if ((A->row_position < B->row_position))
+                A = A->next;
+            else
+                B = B->next;
+        }
+    }
+    PrintList(C);
+}
+
+//------------------------------------------------------------------------------------main------------------------------------------------------------------------------------
 int main()
 {
 
     struct Matrizes all;
     cria_matrizes(&all);
-    soma_matriz(&all, 0, 1);
+    multiplica_matriz(&all, 0, 1);
     // // Assume 4x5 sparse matrix
     // int sparseMatric[4][5] =
     //     {
