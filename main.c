@@ -37,14 +37,14 @@ void insert_start(struct Node **N, int non_zero_element,
                   int row_index, int column_index)
 {
     struct Node *novo;
-    novo = (struct Node *)malloc(sizeof(node));
+    novo = aloca_nodo();
 
     if (*N == NULL)
     {
         novo->value = non_zero_element;
         novo->column_postion = column_index;
         novo->row_position = row_index;
-        novo->prox = NULL;
+        novo->next = NULL;
         *N = novo;
     }
     else
@@ -52,7 +52,7 @@ void insert_start(struct Node **N, int non_zero_element,
         novo->value = non_zero_element;
         novo->column_postion = column_index;
         novo->row_position = row_index;
-        novo->prox = *N;
+        novo->next = *N;
         *N = novo;
     }
 }
@@ -318,45 +318,48 @@ void multiplica_matriz(Matrizes *p, int id1, int id2)
 void transpor_matriz(Matrizes *p, int id1)
 {
     struct Node *A = p->array[id1];
-    struct Node *aux;
-    struct Node *prev;
+    struct Node *idx = NULL;
     struct Node *At = NULL;
-    int buffer;
-    while (A)
+    struct Node *buffer = NULL;
+    struct Node *restore;
+    while (A) 
     {
-        if (At == NULL)
-        {
-            cria_nodo(&At, A->value, A->column_postion, A->row_position);
-        }
-        else
-        {
-            now = At;
-            post = At->next;
-            if (aux == NULL)
-            {
-                if (now->column_postion > A->column_postion)
-                {
-                    insert_start(&At, A->value, A->column_postion, A->row_position);
-                }
-                else
-                {
-                    (&At, A->value, A->column_postion, A->row_position);
-                }
-            }
-        }
-
+        cria_nodo(&At, A->value, A->column_postion, A->row_position);
         A = A->next;
     }
-    while (At)
-    {
-        prev
-            aux = At->next;
-        if (At->column_postion > aux->column_postion)
-        {
-        }
-    }
+    restore = At;
+    idx = A->next;
+    buffer = A;
+    A = idx;
+    idx = buffer;
+    // while (At)
+    // {
+    //     idx = At->next;
+    //     while (idx) // - At - idx - 3o -
+    //     {
+    //         if (At->column_postion == idx->column_postion)
+    //         {
+    //             if (At->row_position > idx->row_position)
+    //             {
+    //                 *buffer = *At;
+    //                 *At = *idx;
+    //                 *idx = *buffer;
+    //             }
+    //         }
 
-    PrintList(At);
+    //         if (At->column_postion > idx->column_postion)
+    //         {
+    //             *buffer = *At;
+    //             *At = *idx;
+    //             *idx = *buffer;
+    //         }
+
+    //         idx = idx->next;
+    //     }
+    //     At = At->next;
+    // }
+    // At = restore;
+    PrintList(A);
 }
 
 //------------------------------------------------------------------------------------main------------------------------------------------------------------------------------
