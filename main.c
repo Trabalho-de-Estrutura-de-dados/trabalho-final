@@ -87,6 +87,104 @@ void cria_nodo(struct Node **start, int non_zero_element,
         temp->next = r;
     }
 }
+
+// Insere matriz ordenada por linha e coluna
+void insert_sequential(struct Node **N, int val, int row, int col)
+{
+    struct Node *novo, *this, *prev;
+    novo = aloca_nodo();
+    novo->value = val;
+    novo->row_position = row;
+    novo->column_postion = col;
+    this = *N;
+    if (*N == NULL)
+    {
+        printf("NULL POINTER, CREATING NODE\n");
+        novo->next = NULL;
+        *N = novo;
+    }
+    else
+    {
+        while (this)
+        {
+            printf("LOOPING\n");
+            if (this->next == NULL)
+            {
+                if (this->row_position == row)
+                {
+                    if (this->column_postion == col)
+                    {
+                        break;
+                    }
+                    else if (this->column_postion > col)
+                    {
+                        novo->next = this;
+                        *N = novo;
+                    }
+                    else
+                    {
+                        this->next = novo;
+                    }
+                }
+                else
+                {
+                    if (this->row_position > row)
+                    {
+                        novo->next = this;
+                        *N = novo;
+                    }
+                    else
+                    {
+                        this->next = novo;
+                    }
+                }
+                printf("BREAK\n");
+                break;
+            }
+            else
+            {
+                prev = this;
+                this = this->next;
+                if (this->row_position == row)
+                {
+
+                    if (this->column_postion == col)
+                    {
+                        break;
+                    }
+                    else if (this->column_postion > col)
+                    {
+                        prev->next = novo;
+                        novo->next = this;
+                    }
+                    else
+                    {
+                        prev->next = this;
+                        novo->next = this->next;
+                        this->next = novo;
+                    }
+                }
+                else
+                {
+                    if (this->row_position > row)
+                    {
+                        prev->next = novo;
+                        novo->next = this;
+                    }
+                    else
+                    {
+                        prev->next = this;
+                        novo->next = this->next;
+                        this->next = novo;
+                    }
+                }
+            }
+            printf("END\n");
+        }
+        printf("-----------------\n");
+    }
+}
+
 int busca_dado(struct Node **inicio, int linha, int coluna)
 {
     struct Node *atual = *inicio;
@@ -264,6 +362,7 @@ struct Node *soma_subtrai(struct Node *A, struct Node *B, bool op)
     }
     return C;
 }
+
 //--------------------------------------------------------------------------Matriz Operations---------------------------------------------------------------------------------
 
 void soma_matriz(Matrizes *p, int id1, int id2)
@@ -318,34 +417,28 @@ void multiplica_matriz(Matrizes *p, int id1, int id2)
 void transpor_matriz(Matrizes *p, int id1)
 {
     struct Node *A = p->array[id1];
-    struct Node *idx = NULL;
     struct Node *At = NULL;
-    struct Node *buffer = NULL;
-    struct Node *restore;
-    while (A) 
+    while (A)
     {
-        cria_nodo(&At, A->value, A->column_postion, A->row_position);
+        insert_sequential(&At, A->value, A->column_postion, A->row_position);
         A = A->next;
     }
-    restore = At;
-    idx = A->next;
-    buffer = A;
-    A = idx;
-    idx = buffer;
-    // while (At)
-    // {
-    //     idx = At->next;
-    //     while (idx) // - At - idx - 3o -
-    //     {
-    //         if (At->column_postion == idx->column_postion)
-    //         {
-    //             if (At->row_position > idx->row_position)
-    //             {
-    //                 *buffer = *At;
-    //                 *At = *idx;
-    //                 *idx = *buffer;
-    //             }
-    //         }
+
+    PrintList(At);
+    //  while (At)
+    //  {
+    //      idx = At->next;
+    //      while (idx) // - At - idx - 3o -
+    //      {
+    //          if (At->column_postion == idx->column_postion)
+    //          {
+    //              if (At->row_position > idx->row_position)
+    //              {
+    //                  *buffer = *At;
+    //                  *At = *idx;
+    //                  *idx = *buffer;
+    //              }
+    //          }
 
     //         if (At->column_postion > idx->column_postion)
     //         {
@@ -359,7 +452,6 @@ void transpor_matriz(Matrizes *p, int id1)
     //     At = At->next;
     // }
     // At = restore;
-    PrintList(A);
 }
 
 //------------------------------------------------------------------------------------main------------------------------------------------------------------------------------
