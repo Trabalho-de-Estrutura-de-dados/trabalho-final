@@ -102,57 +102,50 @@ void insert_sequential(struct Node **N, int val, int row, int col)
         printf("NULL POINTER, CREATING NODE\n");
         novo->next = NULL;
         *N = novo;
+        printf("---------------------\n");
     }
     else
     {
-        while (this)
+        if (this->next == NULL)
         {
-            printf("LOOPING\n");
-            if (this->next == NULL)
+            if (this->row_position == row)
             {
-                if (this->row_position == row)
+                if (this->column_postion > col)
                 {
-                    if (this->column_postion == col)
-                    {
-                        break;
-                    }
-                    else if (this->column_postion > col)
-                    {
-                        novo->next = this;
-                        *N = novo;
-                    }
-                    else
-                    {
-                        this->next = novo;
-                    }
+                    novo->next = this;
+                    *N = novo;
                 }
                 else
                 {
-                    if (this->row_position > row)
-                    {
-                        novo->next = this;
-                        *N = novo;
-                    }
-                    else
-                    {
-                        this->next = novo;
-                    }
+                    this->next = novo;
                 }
-                printf("BREAK\n");
-                break;
             }
             else
             {
-                prev = this;
-                this = this->next;
+                if (this->row_position > row)
+                {
+                    novo->next = this;
+                    *N = novo;
+                }
+                else
+                {
+                    this->next = novo;
+                }
+            }
+            return;
+        }
+        prev = this;
+
+        while (prev)
+        {
+            this = prev->next;
+            printf("LOOPING\n");
+            while (this)
+            {
                 if (this->row_position == row)
                 {
 
-                    if (this->column_postion == col)
-                    {
-                        break;
-                    }
-                    else if (this->column_postion > col)
+                    if (this->column_postion > col)
                     {
                         prev->next = novo;
                         novo->next = this;
@@ -178,8 +171,9 @@ void insert_sequential(struct Node **N, int val, int row, int col)
                         this->next = novo;
                     }
                 }
+                this = this->next;
             }
-            printf("END\n");
+            prev = prev->next;
         }
         printf("-----------------\n");
     }
@@ -215,7 +209,7 @@ void libera_lista(struct Node **inicio)
 // starting from start
 void PrintList(struct Node *start)
 {
-    struct Node *temp, *r, *s;
+    struct Node *temp, *r, *s, *aux;
     temp = r = s = start;
     int nowRow = temp->row_position;
     printf("\n-----------------------------\n");
@@ -225,40 +219,19 @@ void PrintList(struct Node *start)
         {
             printf("\n");
         }
-        printf("%d%s", temp->value, " ");
+        printf("%d%s", temp->value, "  ");
 
         nowRow = temp->row_position;
         temp = temp->next;
     }
     printf("\n-----------------------------\n");
     printf("\n");
-    // printf("row_position: \t");
-    // while (temp != NULL)
-    // {
 
-    //     printf("%d ", temp->row_position);
-    //     temp = temp->next;
-    // }
-    // printf("\n");
 
-    // printf("column_postion:\t ");
-    // while (r != NULL)
-    // {
-    //     printf("%d ", r->column_postion);
-    //     r = r->next;
-    // }
-    // printf("\n");
-    // printf("Value: ");
-    // while (s != NULL)
-    // {
-    //     printf("%d ", s->value);
-    //     s = s->next;
-    // }
-    // printf("\n");
 }
 
 //--------------------------------------------------------------Matriz Array Declare---------------------------------------------------------------------------------------------
-void r_w_lista(struct Node **inicio, int mx, Matrizes *p)
+void r_w_lista(struct Node **inicio, int mx)
 {
     int matriz_linhas;
     int matriz_colunas;
@@ -298,7 +271,7 @@ void cria_matrizes(Matrizes *p)
         struct Node *nodo = NULL;
         p->array[i] = nodo;
         p->used++;
-        r_w_lista(&(p->array[i]), i, p);
+        r_w_lista(&(p->array[i]), i);
         PrintList((p->array[i]));
     }
 }
@@ -363,6 +336,17 @@ struct Node *soma_subtrai(struct Node *A, struct Node *B, bool op)
     return C;
 }
 
+void Print_All(struct Matrizes *p)
+{
+    int i = 0;
+    while (p->array[i])
+    {
+        printf("%s%d", "Matriz No: ", i);
+        PrintList(p->array[i]);
+        i++;
+    }
+}
+
 //--------------------------------------------------------------------------Matriz Operations---------------------------------------------------------------------------------
 
 void soma_matriz(Matrizes *p, int id1, int id2)
@@ -370,8 +354,24 @@ void soma_matriz(Matrizes *p, int id1, int id2)
     struct Node *A = p->array[id1];
     struct Node *B = p->array[id2];
     struct Node *C = soma_subtrai(A, B, true); // op == 1 ? soma matriizes : subtrai matrizes
-
-    PrintList(C);
+    int i = 0;
+    libera_lista(&A);
+    libera_lista(&B);
+    p->array[id1] = C;
+    while (p->array[i])
+    {
+        if (i == id1 || i == id2)
+        {
+            i++;
+            continue;
+        }
+        else
+        {
+            p->array[(i - 1)] == p->array[i];
+            i++; 
+        }
+    }
+    p->array[(i - 1)] = NULL;
 }
 
 void subtrai_matriz(Matrizes *p, int id1, int id2)
@@ -383,7 +383,7 @@ void subtrai_matriz(Matrizes *p, int id1, int id2)
     PrintList(C);
 }
 
-void multiplica_matriz(Matrizes *p, int id1, int id2)
+struct Node *multiplica_matriz(Matrizes *p, int id1, int id2)
 {
     struct Node *A = p->array[id1];
     struct Node *B = p->array[id2];
@@ -411,47 +411,21 @@ void multiplica_matriz(Matrizes *p, int id1, int id2)
                 B = B->next;
         }
     }
-    PrintList(C);
+    return C;
 }
 
-void transpor_matriz(Matrizes *p, int id1)
+void transpor_matriz(Matrizes *p, int id1)// NAO FUNCIONA
 {
     struct Node *A = p->array[id1];
     struct Node *At = NULL;
     while (A)
     {
-        insert_sequential(&At, A->value, A->column_postion, A->row_position);
+        cria_nodo(&At, A->value, A->column_postion, A->row_position);
         A = A->next;
     }
 
     PrintList(At);
-    //  while (At)
-    //  {
-    //      idx = At->next;
-    //      while (idx) // - At - idx - 3o -
-    //      {
-    //          if (At->column_postion == idx->column_postion)
-    //          {
-    //              if (At->row_position > idx->row_position)
-    //              {
-    //                  *buffer = *At;
-    //                  *At = *idx;
-    //                  *idx = *buffer;
-    //              }
-    //          }
 
-    //         if (At->column_postion > idx->column_postion)
-    //         {
-    //             *buffer = *At;
-    //             *At = *idx;
-    //             *idx = *buffer;
-    //         }
-
-    //         idx = idx->next;
-    //     }
-    //     At = At->next;
-    // }
-    // At = restore;
 }
 
 //------------------------------------------------------------------------------------main------------------------------------------------------------------------------------
@@ -459,27 +433,48 @@ int main()
 {
 
     struct Matrizes all;
-    cria_matrizes(&all);
-    transpor_matriz(&all, 0);
-    // // Assume 4x5 sparse matrix
-    // int sparseMatric[4][5] =
-    //     {
-    //         {0, 0, 3, 0, 4},
-    //         {0, 0, 5, 7, 0},
-    //         {0, 0, 0, 0, 0},
-    //         {0, 2, 6, 0, 0}};
+    struct Matrizes *p = &all;
+    struct Node *atual = NULL;
+    int isMenu = 1;
+    cria_matrizes(p);
+    //MAIS DE 2 MATRIZES MENU NAO FUNCIONA
+    while (isMenu == 1)
+    {
+        int op;
+        int m1, m2;
+        printf("Escolha uma operação \n1 - Soma \n2 - Subtração\n3 - Multiplicação\n");
+        scanf("%d", &op);
+        printf("Escolha duas das matrizes para realizar a operação\n");
+        Print_All(p);
+        printf("Matriz A: \n");
+        scanf("%d", &m1);
+        printf("Matriz B: \n");
+        scanf("%d", &m2);
+        switch (op)
+        {
+        case 1:
+            soma_matriz(p, m1, m2);
+            printf("RESULTADO\n");
+            Print_All(p);
+            break;
+        case 2:
+            subtrai_matriz(p, m1, m2);
+            printf("RESULTADO\n");
+            Print_All(p);
+            break;
+        case 3:
+            multiplica_matriz(p, m1, m2);
+            printf("RESULTADO\n");
+            Print_All(p);
+            break;
 
-    /* Start with the empty list */
-    // struct Node *start = NULL;
+        default:
+            isMenu = 0;
+            break;
+        }
+    }
 
-    // for (int i = 0; i < 4; i++){
-    //     for (int j = 0; j < 5; j++)
 
-    //         // Pass only those values which are non - zero
-    //         if (sparseMatric[i][j] != 0)
-    //             cria_nodo(&start, sparseMatric[i][j], i, j);
-
-    // }
 
     return 0;
 }
