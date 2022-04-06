@@ -1,8 +1,10 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "*.jsp": "jsp",
         ".env": "dotenv",
+        "nodefuntions.h": "c",
+        "nodefunctions.h": "c",
+        "stdlib.h": "c",
         "stdio.h": "c"
     }
 }
