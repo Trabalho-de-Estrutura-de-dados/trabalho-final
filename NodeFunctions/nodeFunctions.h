@@ -2,7 +2,7 @@
 #ifndef sparseNode
 #define sparseNode
 
-//Inicio de uma Lista encadeada que representa uma Matriz Sparsa
+// Inicio de uma Lista encadeada que representa uma Matriz Sparsa
 typedef struct Node
 {
     int value;
@@ -11,11 +11,12 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-Node * alocate_node();
+Node *alocate_node();
 void insert_start(Node **N, int value, int row, int col);
 void create_node(Node **N, int value, int row, int col);
 void free_list(Node **start);
 void PrintList(Node *start);
 int get_data(Node **start, int row, int col);
+void sortedInsert(Node **head_ref, Node *new_node);
 
 #endif

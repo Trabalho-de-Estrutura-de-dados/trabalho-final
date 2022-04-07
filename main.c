@@ -16,7 +16,7 @@ int main()
 
     while (isMenu == 1)
     {
-        printf("ESCOLHA UMA OPERAÇÃO \n1-SOMA \n2-SUBTRAÇÃO\n3-MULTIPLICAÇÃO\n");
+        printf("ESCOLHA UMA OPERAÇÃO \n1-SOMA \n2-SUBTRAÇÃO\n3-MULTIPLICAÇÃO");
         scanf("%d", &op);
         switch (op)
         {

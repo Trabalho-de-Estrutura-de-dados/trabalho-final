@@ -106,12 +106,14 @@ Node *mult_matrix(Node *A, Node *B)
 
 Node *transpose_matrix(Node *A)
 {
-    Node *aux = NULL;
-    Node *tmp, *next, *prev;
+    Node *tmp;
     Node *At = NULL;
     while (A)
     {
-        create_node(&At, A->value, A->column_postion, A->row_position);
+        tmp->value = A->value;
+        tmp->row_position = A->column_postion;
+        tmp->column_postion = A->row_position;
+        sortedInsert(&At, tmp);
         A = A->next;
     }
     return At;

@@ -40,7 +40,7 @@ void insert_start(Node **N, int value, int row, int col)
 void create_node(Node **N, int value, int row, int col)
 {
     Node *temp = *N;
-    Node* aux;
+    Node *aux;
     if (*N == NULL)
     {
         temp = alocate_node();
@@ -62,7 +62,6 @@ void create_node(Node **N, int value, int row, int col)
         aux->column_postion = col;
         aux->next = NULL;
         temp->next = aux;
-       
     }
 }
 
@@ -79,26 +78,75 @@ void free_list(Node **start)
     now = NULL;
 }
 
+void sortedInsert(Node **head_ref,
+                  Node *new_node)
+{
+    Node *current;
+    /* Special case for the head end */
+    if (*head_ref == NULL || (*head_ref)->row_position >= new_node->row_position )
+    {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+    }
+    else
+    {
+        /* Locate the node before
+the point of insertion */
+        current = *head_ref;
+        while (current->next != NULL && current->next->row_position < new_node->row_position)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+
 void PrintList(Node *start)
 {
-    Node *temp, *r, *s, *aux;
-    temp = r = s = start;
-    int nowRow = temp->row_position;
-    printf("\n-----------------------------\n");
-    while (temp)
-    {
-        if (temp->row_position != nowRow)
-        {
-            printf("\n");
-        }
-        printf("%d%s", temp->value, "  ");
 
-        nowRow = temp->row_position;
-        temp = temp->next;
-    }
+    Node *tmp = start;
+    int nowRow = tmp->row_position;
+    int cc = 0;
+    int cr = 0;
     printf("\n-----------------------------\n");
-    printf("\n");
+    while (tmp)
+    {
+        printf("%s%d%s%s%d%s%d%s", "[", tmp->row_position, "]", "[", tmp->column_postion, "]", tmp->value, "  ");
+        tmp = tmp->next;
+    }
 }
+
+// void PrintList(Node *start)
+// {
+//     Node *temp, *r, *s, *aux;
+//     temp = start;
+//     int nowRow = temp->row_position;
+//     int counter = 0;
+
+//     printf("\n-----------------------------\n");
+//     while (temp)
+//     {
+//         if (temp->row_position != nowRow)
+//         {
+//             counter = 0;
+//             printf("\n");
+//         }
+//         if (temp->column_postion != counter)
+//         {
+//             printf("0  ");
+//         }
+//         else
+//         {
+//             printf("%d%s", temp->value, "  ");
+//         }
+//         nowRow = temp->row_position;
+//         temp = temp->next;
+//         counter ++;
+//     }
+//     printf("\n-----------------------------\n");
+//     printf("\n");
+// }
 
 int get_data(Node **start, int row, int col)
 {
