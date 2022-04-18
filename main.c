@@ -16,7 +16,7 @@ int main()
 
     while (isMenu == 1)
     {
-        printf("ESCOLHA UMA OPERAÇÃO \n1-SOMA \n2-SUBTRAÇÃO\n3-MULTIPLICAÇÃO");
+        printf("ESCOLHA UMA OPERAÇÃO \n1-SOMA \n2-SUBTRAÇÃO\n3-MULTIPLICAÇÃO\n>>");
         scanf("%d", &op);
         switch (op)
         {
@@ -41,7 +41,7 @@ int main()
         {
             printf("RESULTADO\n");
             PrintList(Mlist->start);
-            printf("INSIRA A MATRIZ PARA FAZER OPERAÇÃO COM O RESULTADO\n");
+            printf("\nINSIRA A MATRIZ PARA FAZER OPERAÇÃO COM O RESULTADO\n");
             read_write_list(&Mlist);
         }
     }

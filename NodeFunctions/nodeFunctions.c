@@ -93,7 +93,7 @@ void sortedInsert(Node **head_ref,
         /* Locate the node before
 the point of insertion */
         current = *head_ref;
-        while (current->next != NULL && current->next->row_position < new_node->row_position)
+        while (current->next != NULL && (current->next->row_position + current->next->column_postion *10) < (new_node->row_position + new_node->column_postion * 10))
         {
             current = current->next;
         }
@@ -109,7 +109,6 @@ void PrintList(Node *start)
     int nowRow = tmp->row_position;
     int cc = 0;
     int cr = 0;
-    printf("\n-----------------------------\n");
     while (tmp)
     {
         printf("%s%d%s%s%d%s%d%s", "[", tmp->row_position, "]", "[", tmp->column_postion, "]", tmp->value, "  ");
